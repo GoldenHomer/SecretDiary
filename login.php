@@ -2,6 +2,12 @@
 	
 	session_start();
 
+	if ($_GET["logout"]==1 AND $_SESSION['id']) {
+		session_destroy();
+
+		$message = "You have been logged out.";
+	}
+
 	include("connection.php");
 
 	if ($_POST['submit']=="Sign Up") {
@@ -26,7 +32,7 @@
 		}
 
 		if ($error) {
-			echo "There were error(s) in your signup info: ".$error;
+			$error = "There were error(s) in your signup info: ".$error;
 		}
 		else {
 			$query="SELECT * FROM users WHERE email='".mysqli_real_escape_string($link, $_POST['email'])."'"; // Whoa, all these double and single quotes look nasty.
@@ -36,7 +42,7 @@
 			echo $results = mysqli_num_rows($result);
 
 			if ($results) {
-				echo "That email address is already registered. Perhaps you want to log in?";
+				$error = "That email address is already registered. Perhaps you want to log in?";
 			}
 			else {
 				$query="INSERT INTO 'users' ('email', 'password') VALUES('".mysqli_real_escape_string($link, $_POST['email'])."', '"md5(md5($_POST['email']).$_POST['password'])."')";
@@ -47,9 +53,8 @@
 
 				$_SESSION['id']=mysqli_insert_id($link);
 
-				print_r($_SESSION);
 
-				//Redirect to logged-in page.
+				header("Location:mainpage.php");
 			}
 		}
 	}
@@ -66,10 +71,10 @@
 		if ($row) {
 			$_SESSION['id']=$row['id'];
 
-			//Redirect to logged in page
+			header("Location:mainpage.php");
 		}
 		else {
-			echo "Could not find a user with that email and password.";
+			$error = "Could not find a user with that email and password.";
 		}
 	}
 ?>

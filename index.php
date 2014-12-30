@@ -3,7 +3,7 @@
 <!doctype html>
 <html lang="en">
 	<head>
-		<title>Landing Page</title>
+		<title>Diary Sign In</title>
 		<meta charset="utf-8" />
 		<meta http-equiv="Content-type" content="text/html; charset=utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -30,11 +30,11 @@
 				</div>
 
 				<div class="collapse navbar-collapse">
-					<form class="navbar-form navbar-right">
+					<form class="navbar-form navbar-right" method="post">
 						<div class="form-group">
-							<input type="email" placeholder="Email" class="form-control">
-							<input type="password" placeholder="Password" class="form-control">
-							<button type="submit" class="btn btn-success">Log In</button>
+							<input type="email" name="loginemail" placeholder="Email" class="form-control" value="<?php echo addslashes($_POST['loginemail']); ?>" />
+							<input type="password" name="loginpassword" placeholder="Password" class="form-control" value="<?php echo addslashes($_POST['loginpassword']); ?>" />
+							<input type="submit" name="submit" class="btn btn-success" value="Log In" />
 						</div>
 					</form>
 				</div>
@@ -44,22 +44,48 @@
 		<div class="container contentContainer" id="background">
 			<div class="row">
 				<div class="col-md-6 col-md-offset-3" id="topRow">
-					<h1 class="topMargin">Diary of a Mad Woman</h1>
-					<p class="bold topMargin">Your own private diary. No, the NSA doesn't care enough.</p>
+					<h1 class="topMargin">Secret Diary</h1>
+					<p class="lead">Your own private diary. No, the NSA doesn't care enough.</p>
+
+					<?php 
+						if ($error) {
+							echo '<div class="alert alert-danger">'.addslashes($error).'</div>';
+						}
+
+						if ($message) {
+							echo '<div class="alert alert-success">'.addslashes($message).'</div>';
+							
+						}
+					?>
+
+					<!-- There might be a missing div or one that's needed around here-->
+					<p class="bold topMargin">Interested yet? Sign up below.</p>
 
 					<form class="topMargin" method="post">
-						<div class="input-group">
-							<label form="email">Email Address</label>
-							<input type="email" class="form-control" placeholder="Your email" />
+						<div class="form-group">
+							<label for="email">Email Address</label>
+							<input type="email" class="form-control" placeholder="Your email" value="<?php echo addslashes($_POST['email']); ?>" />
 						</div>
 
-						<div class="input-group">
-							<label form="password">Password</label>
-							<input type="password" class="form-control" placeholder="Password" />
+						<div class="form-group">
+							<label for="password">Password</label>
+							<input type="password" class="form-control" placeholder="Password" value="<?php echo addslashes($_POST['password']); ?>"/>
 						</div>
 						
 						<input type="submit" name="submit" value="Sign Up" class="btn btn-success btn-lg topMargin" />
 
+					</form>
+					
+					<form method="post">
+						<input type="email" name="email" id="email" value="<?php echo addslashes($_POST['email']); ?>"/>
+						<input type="password" name="password" value="<?php echo addslashes($_POST['password']); ?>" />
+						<input type="submit" name="submit" value="Sign Up" />
+					</form>
+
+					<form method="post">
+						<input type="email" name="loginemail" id="loginemail" value="<?php echo addslashes($_POST['email']); ?>"/>
+						<input type="password" name="loginpassword" value="<?php echo addslashes($_POST['password']); ?>" />
+						<input type="submit" name="submit" value="Log In" />
 					</form>
 				</div>
 			</div>
@@ -73,15 +99,3 @@
 		</script>
 	</body>
 </html>
-
-<form method="post">
-	<input type="email" name="email" id="email" value="<?php echo addslashes($_POST['email']); ?>"/>
-	<input type="password" name="password" value="<?php echo addslashes($_POST['password']); ?>" />
-	<input type="submit" name="submit" value="Sign Up" />
-</form>
-
-<form method="post">
-	<input type="email" name="loginemail" id="loginemail" value="<?php echo addslashes($_POST['email']); ?>"/>
-	<input type="password" name="loginpassword" value="<?php echo addslashes($_POST['password']); ?>" />
-	<input type="submit" name="submit" value="Log In" />
-</form>
